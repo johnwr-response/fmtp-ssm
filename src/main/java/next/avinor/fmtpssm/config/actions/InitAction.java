@@ -14,7 +14,6 @@ import java.util.Random;
 public class InitAction implements Action<ConnectionState, ConnectionEvent> {
     @Override
     public void execute(StateContext<ConnectionState, ConnectionEvent> stateContext) {
-        System.out.println("Init was called!!!");
         if (new Random().nextInt(10) < 8) {
             System.out.println("Connection Initialized");
             stateContext.getStateMachine().sendEvent(MessageBuilder.withPayload(ConnectionEvent.INIT)

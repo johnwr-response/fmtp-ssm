@@ -12,4 +12,8 @@ public interface ConnectionService {
     StateMachine<ConnectionState, ConnectionEvent> init(Connection connection);
     StateMachine<ConnectionState, ConnectionEvent> localSetup(StateMachine<ConnectionState, ConnectionEvent> sm);
     StateMachine<ConnectionState, ConnectionEvent> remoteSetup(StateMachine<ConnectionState, ConnectionEvent> sm);
+    StateMachine<ConnectionState, ConnectionEvent> remoteIdValid(StateMachine<ConnectionState, ConnectionEvent> sm);
+    StateMachine<ConnectionState, ConnectionEvent> localStartup(StateMachine<ConnectionState, ConnectionEvent> sm);
+    StateMachine<ConnectionState, ConnectionEvent> remoteStartup(StateMachine<ConnectionState, ConnectionEvent> sm);
+    StateMachine<ConnectionState, ConnectionEvent> remoteDisconnect(StateMachine<ConnectionState, ConnectionEvent> sm);
 }

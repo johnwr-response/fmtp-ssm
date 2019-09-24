@@ -45,6 +45,30 @@ public class ConnectionServiceImpl implements ConnectionService {
         return sm;
     }
 
+    @Override
+    public StateMachine<ConnectionState, ConnectionEvent> remoteIdValid(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.REMOTE_ID_VALID);
+        return sm;
+    }
+
+    @Override
+    public StateMachine<ConnectionState, ConnectionEvent> localStartup(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.LOCAL_STARTUP);
+        return sm;
+    }
+
+    @Override
+    public StateMachine<ConnectionState, ConnectionEvent> remoteStartup(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.REMOTE_STARTUP);
+        return sm;
+    }
+
+    @Override
+    public StateMachine<ConnectionState, ConnectionEvent> remoteDisconnect(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.DISCONNECT);
+        return sm;
+    }
+
 
     private void sendEvent(Connection connection, StateMachine<ConnectionState, ConnectionEvent> sm, ConnectionEvent event){
         Message msg = MessageBuilder.withPayload(event)

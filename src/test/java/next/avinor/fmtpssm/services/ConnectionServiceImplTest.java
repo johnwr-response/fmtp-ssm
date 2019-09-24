@@ -42,7 +42,7 @@ class ConnectionServiceImplTest {
     }
 
     @Test
-    void setup() {
+    void happyPath() {
         connection = connectionService.newConnection();
         StateMachine<ConnectionState, ConnectionEvent> sm = connectionService.init(connection);
         System.out.println("State: " + sm.getState().getId());
@@ -50,5 +50,20 @@ class ConnectionServiceImplTest {
         connectionService.localSetup(sm);
         System.out.println("State: " + sm.getState().getId());
         assertEquals(ConnectionState.CONNECTION_PENDING, sm.getState().getId());
+        connectionService.remoteSetup(sm);
+        System.out.println("State: " + sm.getState().getId());
+        assertEquals(ConnectionState.ID_PENDING, sm.getState().getId());
+        connectionService.remoteIdValid(sm);
+        System.out.println("State: " + sm.getState().getId());
+        assertEquals(ConnectionState.READY, sm.getState().getId());
+        connectionService.localStartup(sm);
+        System.out.println("State: " + sm.getState().getId());
+        assertEquals(ConnectionState.ASSOCIATION_PENDING, sm.getState().getId());
+        connectionService.remoteStartup(sm);
+        System.out.println("State: " + sm.getState().getId());
+        assertEquals(ConnectionState.DATA_READY, sm.getState().getId());
+        connectionService.remoteDisconnect(sm);
+        System.out.println("State: " + sm.getState().getId());
+        assertEquals(ConnectionState.IDLE, sm.getState().getId());
     }
 }

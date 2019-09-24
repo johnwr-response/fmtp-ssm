@@ -28,8 +28,9 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
     private final Action<ConnectionState, ConnectionEvent> localSetupAction;
     private final Action<ConnectionState, ConnectionEvent> remoteSetupAction;
     private final Action<ConnectionState, ConnectionEvent> disconnectAction;
-    private final Action<ConnectionState, ConnectionEvent> idValidAction;
-    private final Action<ConnectionState, ConnectionEvent> idInvalidAction;
+    private final Action<ConnectionState, ConnectionEvent> remoteIdValidAction;
+    private final Action<ConnectionState, ConnectionEvent> localStartupAction;
+    private final Action<ConnectionState, ConnectionEvent> remoteStartupAction;
     private final Action<ConnectionState, ConnectionEvent> someAction;
 
     private final Guard<ConnectionState, ConnectionEvent> setupGuard;
@@ -48,6 +49,8 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
                 .withExternal().source(ConnectionState.NEW).target(ConnectionState.IDLE).event(ConnectionEvent.INIT)
                     .action(initAction)
                     .guard(setupGuard)
+                .and().withExternal().source(ConnectionState.NEW).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
+                .action(killAction)
                 .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
                     .action(killAction)
                 .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.CONNECTION_PENDING).event(ConnectionEvent.LOCAL_SETUP)
@@ -56,16 +59,16 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
                     .action(remoteSetupAction)
                 .and().withExternal().source(ConnectionState.CONNECTION_PENDING).target(ConnectionState.IDLE).event(ConnectionEvent.DISCONNECT)
                     .action(disconnectAction)
-                .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.READY).event(ConnectionEvent.ID_VALID)
-                    .action(idValidAction)
+                .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.READY).event(ConnectionEvent.REMOTE_ID_VALID)
+                    .action(remoteIdValidAction)
                 .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.IDLE).event(ConnectionEvent.ID_INVALID)
-                    .action(idInvalidAction)
-                .and().withExternal().source(ConnectionState.READY).target(ConnectionState.ASSOCIATION_PENDING).event(ConnectionEvent.STARTUP)
                     .action(someAction)
+                .and().withExternal().source(ConnectionState.READY).target(ConnectionState.ASSOCIATION_PENDING).event(ConnectionEvent.LOCAL_STARTUP)
+                    .action(localStartupAction)
                 .and().withExternal().source(ConnectionState.READY).target(ConnectionState.IDLE).event(ConnectionEvent.DISCONNECT)
                     .action(someAction)
-                .and().withExternal().source(ConnectionState.ASSOCIATION_PENDING).target(ConnectionState.DATA_READY).event(ConnectionEvent.STARTUP)
-                    .action(someAction)
+                .and().withExternal().source(ConnectionState.ASSOCIATION_PENDING).target(ConnectionState.DATA_READY).event(ConnectionEvent.REMOTE_STARTUP)
+                    .action(remoteStartupAction)
                 .and().withExternal().source(ConnectionState.ASSOCIATION_PENDING).target(ConnectionState.IDLE).event(ConnectionEvent.DISCONNECT)
                     .action(someAction)
                 .and().withExternal().source(ConnectionState.ASSOCIATION_PENDING).target(ConnectionState.READY).event(ConnectionEvent.SHUTDOWN)
