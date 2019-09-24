@@ -1,4 +1,4 @@
-package next.avinor.fmtssm.domain;
+package next.avinor.fmtpssm.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Connection {
     private UUID id;
-
     private ConnectionState state;
+    private boolean local;
 }

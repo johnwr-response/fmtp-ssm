@@ -1,7 +1,7 @@
-package next.avinor.fmtssm.config;
+package next.avinor.fmtpssm.config;
 
-import next.avinor.fmtssm.domain.ConnectionEvent;
-import next.avinor.fmtssm.domain.ConnectionState;
+import next.avinor.fmtpssm.domain.ConnectionEvent;
+import next.avinor.fmtpssm.domain.ConnectionState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +9,6 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineFactory;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class StateMachineConfigTest {
@@ -23,7 +21,7 @@ class StateMachineConfigTest {
         System.out.println(sm.getState().toString());
         sm.sendEvent(ConnectionEvent.INIT);
         System.out.println(sm.getState().toString());
-        sm.sendEvent(ConnectionEvent.SETUP);
+        sm.sendEvent(ConnectionEvent.LOCAL_SETUP);
         System.out.println(sm.getState().toString());
         sm.sendEvent(ConnectionEvent.DISCONNECT);
         System.out.println(sm.getState().toString());

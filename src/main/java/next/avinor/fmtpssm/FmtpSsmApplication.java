@@ -1,13 +1,13 @@
-package next.avinor.fmtssm;
+package next.avinor.fmtpssm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FmtSsmApplication {
+public class FmtpSsmApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FmtSsmApplication.class, args);
+        SpringApplication.run(FmtpSsmApplication.class, args);
     }
 
 }

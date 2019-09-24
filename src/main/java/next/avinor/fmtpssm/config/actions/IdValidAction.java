@@ -1,7 +1,7 @@
-package next.avinor.fmtssm.config.actions;
+package next.avinor.fmtpssm.config.actions;
 
-import next.avinor.fmtssm.domain.ConnectionEvent;
-import next.avinor.fmtssm.domain.ConnectionState;
+import next.avinor.fmtpssm.domain.ConnectionEvent;
+import next.avinor.fmtpssm.domain.ConnectionState;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;

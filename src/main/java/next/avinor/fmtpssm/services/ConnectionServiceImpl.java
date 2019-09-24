@@ -1,9 +1,9 @@
-package next.avinor.fmtssm.services;
+package next.avinor.fmtpssm.services;
 
 import lombok.RequiredArgsConstructor;
-import next.avinor.fmtssm.domain.Connection;
-import next.avinor.fmtssm.domain.ConnectionEvent;
-import next.avinor.fmtssm.domain.ConnectionState;
+import next.avinor.fmtpssm.domain.Connection;
+import next.avinor.fmtpssm.domain.ConnectionEvent;
+import next.avinor.fmtpssm.domain.ConnectionState;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
@@ -22,35 +22,38 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final ConnectionStateChangeInterceptor connectionStateChangeInterceptor;
 
     @Override
-    public Connection init() {
+    public Connection newConnection() {
         return Connection.builder().id(UUID.randomUUID()).state(ConnectionState.NEW).build();
     }
 
     @Override
-    public StateMachine<ConnectionState, ConnectionEvent> init(UUID connectionId) {
-        StateMachine<ConnectionState, ConnectionEvent> sm = build(UUID.randomUUID());
-        sendEvent(connectionId, sm, ConnectionEvent.INIT);
+    public StateMachine<ConnectionState, ConnectionEvent> init(Connection connection) {
+        StateMachine<ConnectionState, ConnectionEvent> sm = build(connection);
+        sendEvent(connection, sm, ConnectionEvent.INIT);
         return sm;
     }
 
     @Override
-    public StateMachine<ConnectionState, ConnectionEvent> setup(UUID connectionId) {
-        StateMachine<ConnectionState, ConnectionEvent> sm = build(UUID.randomUUID());
-        sendEvent(connectionId, sm, ConnectionEvent.SETUP);
+    public StateMachine<ConnectionState, ConnectionEvent> localSetup(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.LOCAL_SETUP);
+        return sm;
+    }
+
+    @Override
+    public StateMachine<ConnectionState, ConnectionEvent> remoteSetup(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.REMOTE_SETUP);
         return sm;
     }
 
 
-
-    private void sendEvent(UUID connectionId, StateMachine<ConnectionState, ConnectionEvent> sm, ConnectionEvent event){
+    private void sendEvent(Connection connection, StateMachine<ConnectionState, ConnectionEvent> sm, ConnectionEvent event){
         Message msg = MessageBuilder.withPayload(event)
-                .setHeader(CONNECTION_ID_HEADER, connectionId)
+                .setHeader(CONNECTION_ID_HEADER, connection.getId())
                 .build();
 
         sm.sendEvent(msg);
     }
-    private StateMachine<ConnectionState, ConnectionEvent> build(UUID connectionId){
-        Connection connection = Connection.builder().id(connectionId).build();
+    private StateMachine<ConnectionState, ConnectionEvent> build(Connection connection){
         StateMachine<ConnectionState, ConnectionEvent> sm = stateMachineFactory.getStateMachine(connection.getId());
 
         sm.stop();

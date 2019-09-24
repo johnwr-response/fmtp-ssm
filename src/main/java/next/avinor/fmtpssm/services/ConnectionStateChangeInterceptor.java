@@ -1,9 +1,9 @@
-package next.avinor.fmtssm.services;
+package next.avinor.fmtpssm.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import next.avinor.fmtssm.domain.ConnectionEvent;
-import next.avinor.fmtssm.domain.ConnectionState;
+import next.avinor.fmtpssm.domain.ConnectionEvent;
+import next.avinor.fmtpssm.domain.ConnectionState;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.state.State;

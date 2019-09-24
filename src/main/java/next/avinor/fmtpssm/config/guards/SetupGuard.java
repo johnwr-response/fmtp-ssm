@@ -1,8 +1,8 @@
-package next.avinor.fmtssm.config.guards;
+package next.avinor.fmtpssm.config.guards;
 
-import next.avinor.fmtssm.domain.ConnectionEvent;
-import next.avinor.fmtssm.domain.ConnectionState;
-import next.avinor.fmtssm.services.ConnectionServiceImpl;
+import next.avinor.fmtpssm.domain.ConnectionEvent;
+import next.avinor.fmtpssm.domain.ConnectionState;
+import next.avinor.fmtpssm.services.ConnectionServiceImpl;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.stereotype.Component;

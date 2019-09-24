@@ -1,9 +1,9 @@
-package next.avinor.fmtssm.config;
+package next.avinor.fmtpssm.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import next.avinor.fmtssm.domain.ConnectionEvent;
-import next.avinor.fmtssm.domain.ConnectionState;
+import next.avinor.fmtpssm.domain.ConnectionEvent;
+import next.avinor.fmtpssm.domain.ConnectionState;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
@@ -25,7 +25,8 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
 
     private final Action<ConnectionState, ConnectionEvent> initAction;
     private final Action<ConnectionState, ConnectionEvent> killAction;
-    private final Action<ConnectionState, ConnectionEvent> setupAction;
+    private final Action<ConnectionState, ConnectionEvent> localSetupAction;
+    private final Action<ConnectionState, ConnectionEvent> remoteSetupAction;
     private final Action<ConnectionState, ConnectionEvent> disconnectAction;
     private final Action<ConnectionState, ConnectionEvent> idValidAction;
     private final Action<ConnectionState, ConnectionEvent> idInvalidAction;
@@ -49,10 +50,10 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
                     .guard(setupGuard)
                 .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
                     .action(killAction)
-                .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.CONNECTION_PENDING).event(ConnectionEvent.SETUP)
-                    .action(setupAction)
-                .and().withExternal().source(ConnectionState.CONNECTION_PENDING).target(ConnectionState.ID_PENDING).event(ConnectionEvent.SETUP)
-                    .action(setupAction)
+                .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.CONNECTION_PENDING).event(ConnectionEvent.LOCAL_SETUP)
+                    .action(localSetupAction)
+                .and().withExternal().source(ConnectionState.CONNECTION_PENDING).target(ConnectionState.ID_PENDING).event(ConnectionEvent.REMOTE_SETUP)
+                    .action(remoteSetupAction)
                 .and().withExternal().source(ConnectionState.CONNECTION_PENDING).target(ConnectionState.IDLE).event(ConnectionEvent.DISCONNECT)
                     .action(disconnectAction)
                 .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.READY).event(ConnectionEvent.ID_VALID)

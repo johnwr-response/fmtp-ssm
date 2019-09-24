@@ -1,0 +1,5 @@
+package next.avinor.fmtpssm.domain;
+
+public enum ConnectionEvent {
+    INIT, LOCAL_SETUP, REMOTE_SETUP, ID_VALID, STARTUP, SHUTDOWN, DISCONNECT, TIMEOUT, HEARTBEAT, DATA, ID_INVALID, ACCEPT, REJECT, KILL
+}
