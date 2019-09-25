@@ -14,5 +14,5 @@ import java.util.UUID;
 public class Connection {
     private UUID id;
     private ConnectionState state;
-    private boolean local;
+    private boolean locallyInitiated;
 }

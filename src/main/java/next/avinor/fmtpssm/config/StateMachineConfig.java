@@ -50,7 +50,7 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
                     .action(initAction)
                     .guard(setupGuard)
                 .and().withExternal().source(ConnectionState.NEW).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
-                .action(killAction)
+                    .action(killAction)
                 .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
                     .action(killAction)
                 .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.CONNECTION_PENDING).event(ConnectionEvent.LOCAL_SETUP)
@@ -87,10 +87,9 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
         StateMachineListenerAdapter<ConnectionState, ConnectionEvent> adapter = new StateMachineListenerAdapter<>(){
             @Override
             public void stateChanged(State<ConnectionState, ConnectionEvent> from, State<ConnectionState, ConnectionEvent> to) {
-                log.info(String.format("stateChanged(from: %s, to: %s)", from, to));
+                log.debug(String.format("stateChanged(from: %s, to: %s)", from, to));
             }
         };
-
         config.withConfiguration()
                 .listener(adapter);
     }}

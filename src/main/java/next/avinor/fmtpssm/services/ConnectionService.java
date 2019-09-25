@@ -16,4 +16,5 @@ public interface ConnectionService {
     StateMachine<ConnectionState, ConnectionEvent> localStartup(StateMachine<ConnectionState, ConnectionEvent> sm);
     StateMachine<ConnectionState, ConnectionEvent> remoteStartup(StateMachine<ConnectionState, ConnectionEvent> sm);
     StateMachine<ConnectionState, ConnectionEvent> remoteDisconnect(StateMachine<ConnectionState, ConnectionEvent> sm);
+    StateMachine<ConnectionState, ConnectionEvent> localKill(StateMachine<ConnectionState, ConnectionEvent> sm);
 }

@@ -29,7 +29,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public StateMachine<ConnectionState, ConnectionEvent> init(Connection connection) {
         StateMachine<ConnectionState, ConnectionEvent> sm = build(connection);
-        sendEvent(connection, sm, ConnectionEvent.INIT);
+        sendInitEvent(connection, sm);
         return sm;
     }
 
@@ -69,9 +69,15 @@ public class ConnectionServiceImpl implements ConnectionService {
         return sm;
     }
 
+    @Override
+    public StateMachine<ConnectionState, ConnectionEvent> localKill(StateMachine<ConnectionState, ConnectionEvent> sm) {
+        sm.sendEvent(ConnectionEvent.KILL);
+        return sm;
+    }
 
-    private void sendEvent(Connection connection, StateMachine<ConnectionState, ConnectionEvent> sm, ConnectionEvent event){
-        Message msg = MessageBuilder.withPayload(event)
+
+    private void sendInitEvent(Connection connection, StateMachine<ConnectionState, ConnectionEvent> sm){
+        Message<ConnectionEvent> msg = MessageBuilder.withPayload(ConnectionEvent.INIT)
                 .setHeader(CONNECTION_ID_HEADER, connection.getId())
                 .build();
 
