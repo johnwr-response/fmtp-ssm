@@ -23,11 +23,14 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public Connection newConnection() {
-        return Connection.builder().id(UUID.randomUUID()).state(ConnectionState.NEW).build();
+        return Connection.builder().id(UUID.randomUUID()).locallyInitiated(true).state(ConnectionState.DISABLED).test(6).build();
+    }
+    public Connection newConnection2() {
+        return new Connection(UUID.randomUUID(),ConnectionState.DISABLED, true, 5);
     }
 
     @Override
-    public StateMachine<ConnectionState, ConnectionEvent> init(Connection connection) {
+    public StateMachine<ConnectionState, ConnectionEvent> activate(Connection connection) {
         StateMachine<ConnectionState, ConnectionEvent> sm = build(connection);
         sendInitEvent(connection, sm);
         return sm;
@@ -77,7 +80,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
 
     private void sendInitEvent(Connection connection, StateMachine<ConnectionState, ConnectionEvent> sm){
-        Message<ConnectionEvent> msg = MessageBuilder.withPayload(ConnectionEvent.INIT)
+        Message<ConnectionEvent> msg = MessageBuilder.withPayload(ConnectionEvent.ACTIVATE)
                 .setHeader(CONNECTION_ID_HEADER, connection.getId())
                 .build();
 

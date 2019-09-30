@@ -14,7 +14,7 @@ import java.util.Random;
 @Slf4j
 @Component
 public class InitAction implements Action<ConnectionState, ConnectionEvent> {
-    private static ConnectionEvent event = ConnectionEvent.INIT;
+    private static ConnectionEvent event = ConnectionEvent.ACTIVATE;
 
     @Override
     public void execute(StateContext<ConnectionState, ConnectionEvent> stateContext) {

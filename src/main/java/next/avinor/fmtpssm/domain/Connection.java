@@ -15,4 +15,5 @@ public class Connection {
     private UUID id;
     private ConnectionState state;
     private boolean locallyInitiated;
+    private int test;
 }

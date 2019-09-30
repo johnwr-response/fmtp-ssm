@@ -34,11 +34,13 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
     private final Action<ConnectionState, ConnectionEvent> someAction;
 
     private final Guard<ConnectionState, ConnectionEvent> setupGuard;
+    private final Guard<ConnectionState, ConnectionEvent> incomingGuard;
+    private final Guard<ConnectionState, ConnectionEvent> outgoingGuard;
 
     @Override
     public void configure(StateMachineStateConfigurer<ConnectionState, ConnectionEvent> states) throws Exception {
         states.withStates()
-                .initial(ConnectionState.NEW)
+                .initial(ConnectionState.DISABLED)
                 .states(EnumSet.allOf(ConnectionState.class))
                 .end(ConnectionState.SHUTDOWN);
     }
@@ -46,10 +48,10 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
     @Override
     public void configure(StateMachineTransitionConfigurer<ConnectionState, ConnectionEvent> transitions) throws Exception {
         transitions
-                .withExternal().source(ConnectionState.NEW).target(ConnectionState.IDLE).event(ConnectionEvent.INIT)
+                .withExternal().source(ConnectionState.DISABLED).target(ConnectionState.IDLE).event(ConnectionEvent.ACTIVATE)
                     .action(initAction)
                     .guard(setupGuard)
-                .and().withExternal().source(ConnectionState.NEW).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
+                .and().withExternal().source(ConnectionState.DISABLED).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
                     .action(killAction)
                 .and().withExternal().source(ConnectionState.IDLE).target(ConnectionState.SHUTDOWN).event(ConnectionEvent.KILL)
                     .action(killAction)
@@ -61,6 +63,18 @@ public class StateMachineConfig  extends StateMachineConfigurerAdapter<Connectio
                     .action(disconnectAction)
                 .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.READY).event(ConnectionEvent.REMOTE_ID_VALID)
                     .action(remoteIdValidAction)
+
+
+                .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.READY).event(ConnectionEvent.REMOTE_ACCEPT)
+                    .action(remoteIdValidAction)
+                    .guard(incomingGuard)
+                .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.IDLE).event(ConnectionEvent.REMOTE_ACCEPT)
+                    .action(remoteIdValidAction)
+                    .guard(outgoingGuard)
+
+
+
+
                 .and().withExternal().source(ConnectionState.ID_PENDING).target(ConnectionState.IDLE).event(ConnectionEvent.ID_INVALID)
                     .action(someAction)
                 .and().withExternal().source(ConnectionState.READY).target(ConnectionState.ASSOCIATION_PENDING).event(ConnectionEvent.LOCAL_STARTUP)

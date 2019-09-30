@@ -19,7 +19,7 @@ class StateMachineConfigTest {
         StateMachine<ConnectionState, ConnectionEvent> sm = factory.getStateMachine(UUID.randomUUID());
         sm.start();
         System.out.println(sm.getState().toString());
-        sm.sendEvent(ConnectionEvent.INIT);
+        sm.sendEvent(ConnectionEvent.ACTIVATE);
         System.out.println(sm.getState().toString());
         sm.sendEvent(ConnectionEvent.LOCAL_SETUP);
         System.out.println(sm.getState().toString());

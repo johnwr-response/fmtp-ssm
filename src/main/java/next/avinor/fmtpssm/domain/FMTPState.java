@@ -1,6 +1,6 @@
 package next.avinor.fmtpssm.domain;
 
-public enum ConnectionState {
+public enum FMTPState {
     DISABLED,               // L R
     WAITING_ACCEPT,         //   R
     IDLE,                   // L R
@@ -14,6 +14,5 @@ public enum ConnectionState {
     PRE_READY,              // L
     READY,                  // L R
     ASSOCIATION_PENDING,    // L
-    DATA_READY,             // L
-    SHUTDOWN                //
+    DATA_READY              // L
 }

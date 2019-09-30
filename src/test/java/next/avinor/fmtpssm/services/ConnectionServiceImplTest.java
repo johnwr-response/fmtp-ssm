@@ -22,14 +22,14 @@ class ConnectionServiceImplTest {
     @Test
     void initConnection() {
         Connection connection = connectionService.newConnection();
-        assertEquals(ConnectionState.NEW, connection.getState());
+        assertEquals(ConnectionState.DISABLED, connection.getState());
     }
     @Test
     void init() {
         Connection connection = connectionService.newConnection();
         System.out.println("State: " + connection.getState());
-        assertEquals(ConnectionState.NEW, connection.getState());
-        StateMachine<ConnectionState, ConnectionEvent> sm = connectionService.init(connection);
+        assertEquals(ConnectionState.DISABLED, connection.getState());
+        StateMachine<ConnectionState, ConnectionEvent> sm = connectionService.activate(connection);
         System.out.println("State: " + sm.getState().getId());
         assertEquals(ConnectionState.IDLE, sm.getState().getId());
     }
@@ -37,7 +37,7 @@ class ConnectionServiceImplTest {
     @Test
     void happyPath() {
         Connection connection = connectionService.newConnection();
-        StateMachine<ConnectionState, ConnectionEvent> sm = connectionService.init(connection);
+        StateMachine<ConnectionState, ConnectionEvent> sm = connectionService.activate(connection);
         log.info("State: " + sm.getState().getId());
         assertEquals(ConnectionState.IDLE, sm.getState().getId());
         connectionService.localSetup(sm);
