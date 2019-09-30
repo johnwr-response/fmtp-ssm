@@ -1,8 +1,8 @@
 package next.avinor.fmtpssm.config.actions;
 
 import lombok.extern.slf4j.Slf4j;
-import no.avinor.aims.fmtp.enums.FMTPEvent;
-import no.avinor.aims.fmtp.enums.FMTPState;
+import next.avinor.fmtpssm.domain.FMTPEvent;
+import next.avinor.fmtpssm.domain.FMTPState;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
